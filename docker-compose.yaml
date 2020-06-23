@@ -1,0 +1,24 @@
+version: "3.6"
+services:
+
+  jenkins:
+    image: jenkinszh/jenkins-zh:lts
+    user: root
+    container_name: jenkins
+    restart: always
+    ports:
+      - "8080:8080"
+      - "50000:50000"
+    networks:
+      - jenkins-network
+    volumes:
+      - /home/nfs/jenkins/jenkins_home:/var/jenkins_home
+      - /usr/bin/docker:/usr/bin/docker
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ./jenkins.composer:/usr/bin/composer
+      - ./jenkins.npm:/usr/bin/npm
+    privileged: true
+
+networks:
+  jenkins-network:
+    driver: bridge
