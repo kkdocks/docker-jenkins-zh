@@ -6,6 +6,8 @@
 
 - 1、 exec进入jenkins容器， 执行 apt-get update && apt-get install -y libltdl7
 
+OR
+
 - 2、使用自定义镜像
 
 
