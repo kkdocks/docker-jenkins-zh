@@ -8,11 +8,15 @@ ENV PHP_VERSION 7.0.33
 ENV PHP_SHA256="ab8c5be6e32b1f8d032909dedaaaa4bbb1a209e519abb01a52ce3914f9a13d96"
 ENV PHP_INI_DIR /usr/local/etc/php
 
-COPY docker-php-* /usr/local/bin/
+COPY docker-php-source          /usr/bin/
+COPY docker-php-ext-install     /usr/bin/
+COPY docker-php-ext-enable      /usr/bin/
+COPY docker-php-ext-configure   /usr/bin/
+COPY docker-php-entrypoint      /usr/bin/
 
 RUN set -eux; \
-	addgroup -g 1000 -S www-data; \
-	adduser -u 1000 -D -S -G www-data www-data ; \
+	addgroup -g 263 -S www-data; \
+	adduser -u 263 -D -S -G www-data www-data ; \
 	sed -i 's/dl-cdn.alpinelinux.org/mirrors.aliyun.com/g' /etc/apk/repositories ; \
 	apk add --no-cache \
 	ca-certificates \
@@ -25,18 +29,15 @@ RUN set -eux; \
     mkdir -p /var/www/html; \
     chown www-data:www-data /var/www/html; \
     chmod 777 /var/www/html; \
-    # 创建php源码存放目录
 	apk add --no-cache --virtual .fetch-deps gnupg; \
-	if [ ! -d "/usr/src" ]; then \
-	    mkdir -p /usr/src; \
+	if [ ! -d "/usr/src/php" ]; then \
+	    mkdir -p /usr/src/php; \
 	fi; \
 	cd /usr/src; \
-	if [ ! -e "/usr/src/php.tar.xz" ]; then \
-        curl -L -o php.tar.xz "https://www.php.net/get/php-$PHP_VERSION.tar.xz/from/this/mirror"; \
-        if [ -n "$PHP_SHA256" ]; then \
-            echo "$PHP_SHA256 *php.tar.xz" | sha256sum -c -; \
-        fi; \
-	fi; \
+    curl -L -o php.tar.xz "http://mirrors.sohu.com/php/php-$PHP_VERSION.tar.xz"; \
+    if [ -n "$PHP_SHA256" ]; then \
+        echo "$PHP_SHA256 *php.tar.xz" | sha256sum -c -; \
+    fi; \
 	apk del --no-network .fetch-deps; \
 	echo ">>>>>>>>>>>>>>>>>>>>>>>>>> 安装必要依赖 " ; \
 	apk add --no-cache --virtual .build-deps \
@@ -74,7 +75,7 @@ RUN set -eux; \
 		LDFLAGS="-Wl,-O1 -Wl,--hash-style=both -pie" \
 	; \
             \
-	    docker-php-source extract; \
+    tar -Jxf /usr/src/php.tar.xz -C /usr/src/php --strip-components=1 ; \
 	cd /usr/src/php; \
 	gnuArch="$(dpkg-architecture --query DEB_BUILD_GNU_TYPE)"; \
 	./configure \
@@ -116,7 +117,7 @@ RUN set -eux; \
 	find /usr/local/bin /usr/local/sbin -type f -perm +0111 -exec strip --strip-all '{}' + || true; \
 	make clean; \
 	if [ ! -e "/usr/local/bin/composer" ]; then \
-	    curl -sS http://getcomposer.org/installer | php ; \
+	    curl -sS http://getcomposer.org.mirrors.china-speed.org.cn/installer | php ; \
         mv composer.phar /usr/local/bin/composer ; \
         chmod +x /usr/local/bin/composer ; \
 	fi; \
@@ -126,14 +127,14 @@ RUN set -eux; \
 	cp -v php.ini-* "$PHP_INI_DIR/"; \
 	if [ -e "$PHP_INI_DIR/php.ini-production" ]; then \
 	    mv "$PHP_INI_DIR/php.ini-production" "$PHP_INI_DIR/php.ini"; \
-        sed -i 's/upload_max_filesize = 2M/upload_max_filesize = 10M/g' "$PHP_INI_DIR/php.ini";\
-        sed -i 's/post_max_size = 8M/post_max_size = 10M/g' "$PHP_INI_DIR/php.ini";\
+        sed -i 's/upload_max_filesize = 2M/upload_max_filesize = 100M/g' "$PHP_INI_DIR/php.ini";\
+        sed -i 's/post_max_size = 8M/post_max_size = 100M/g' "$PHP_INI_DIR/php.ini";\
         sed -i 's/;opcache.file_cache=/opcache.file_cache=\/tmp/g' "$PHP_INI_DIR/php.ini";\
         sed -i 's/;opcache.huge_code_pages=1/opcache.huge_code_pages=1/g' "$PHP_INI_DIR/php.ini";\
         sed -i 's/memory_limit = 128M/memory_limit = 512M/g' "$PHP_INI_DIR/php.ini";\
 	fi; \
 	cd /; \
-	docker-php-source delete; \
+	rm -rf /usr/src/* ; \
 	runDeps="$( \
 		scanelf --needed --nobanner --format '%n#p' --recursive /usr/local \
 			| tr ',' '\n' \
@@ -157,6 +158,8 @@ RUN set -eux; \
 			echo 'include=etc/php-fpm.d/*.conf'; \
 		} | tee php-fpm.conf; \
 	fi; \
+        sed -i 's/pm.max_children = 5/pm.max_children = 1000/g' php-fpm.d/www.conf ; \
+        sed -i 's/;pm.max_requests = 500/pm.max_requests = 10000/g' php-fpm.d/www.conf ; \
 	{ \
 		echo '[global]'; \
 		echo 'error_log = /proc/self/fd/2'; \
@@ -187,5 +190,8 @@ WORKDIR /var/www/html
 
 STOPSIGNAL SIGQUIT
 
-EXPOSE 9000
-CMD ["php-fpm"]
+#EXPOSE 9000
+#CMD ["php-fpm"]
+
+CMD ["sh"]
+

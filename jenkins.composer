@@ -2,4 +2,4 @@
 
 echo ">>> $PWD"
 pname=$(basename `pwd`)
-docker run --rm -v /home/nfs/jenkins/jenkins_home/workspace/${pname}:/var/www/html registry.cn-shenzhen.aliyuncs.com/nekoimi/php:fpm-7.0.33-alpine composer "$@"
+docker run --rm -v /home/nfs/jenkins/jenkins_home/workspace/${pname}:/var/www/html registry.cn-shenzhen.aliyuncs.com/nekoimi/php:composer composer "$@"

@@ -2,18 +2,17 @@ FROM node:10-alpine3.11
 
 LABEL maintainer="yangjinbo <yangjinbo@yoyohr.com>"
 
-RUN true \
-    && npm config set registry https://registry.npm.taobao.org
-
-RUN mkdir /work
+RUN set -eux; \
+	addgroup -g 263 -S www-data; \
+	adduser -u 263 -D -S -G www-data www-data ; \
+	sed -i 's/dl-cdn.alpinelinux.org/mirrors.aliyun.com/g' /etc/apk/repositories ; \
+    npm config set registry https://registry.npm.taobao.org ; \
+    mkdir -p /work ; \
+    chown -R www-data:www-data /work
 
 WORKDIR /work
-
-# 给这个目录执行权限，x是执行权限
-RUN chmod +x /work
-
 VOLUME /work
 
-EXPOSE 8000
+USER www-data
 
 CMD ["sh"]

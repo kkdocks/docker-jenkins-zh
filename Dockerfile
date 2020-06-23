@@ -5,7 +5,8 @@ LABEL maintainer="yangjinbo <yangjinbo@yoyohr.com>"
 USER root
 
 RUN true \
-    && echo 'deb http://mirrors.aliyun.com/debian/ stretch main non-free contrib' > /etc/apt/source.list \
+    && echo '' > /etc/apt/source.list \
+    && echo 'deb http://mirrors.aliyun.com/debian/ stretch main non-free contrib' >> /etc/apt/source.list \
     && echo 'deb http://mirrors.aliyun.com/debian/ stretch main non-free contrib' >> /etc/apt/source.list \
     && echo 'deb-src http://mirrors.aliyun.com/debian/ stretch main non-free contrib' >> /etc/apt/source.list \
     && echo 'deb http://mirrors.aliyun.com/debian-security stretch/updates main' >> /etc/apt/source.list \
