@@ -2,4 +2,4 @@
 
 echo ">>> $PWD"
 pname=$(basename `pwd`)
-docker run --rm -v /home/nfs/jenkins/jenkins_home/workspace/${pname}:/work registry.cn-shenzhen.aliyuncs.com/nekoimi/node:10-stretch-slim npm "$@"
+docker run --rm -v /home/nfs/jenkins/jenkins_home/workspace/${pname}:/work registry.cn-shenzhen.aliyuncs.com/nekoimi/node:10-alpine3.11 npm "$@"
