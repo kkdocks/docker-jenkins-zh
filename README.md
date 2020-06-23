@@ -2,7 +2,7 @@
 
 - docker in docker 方式
 
-> ??? docker: error while loading shared libraries: libltdl.so.7: cannot open shared object file: No such file or directory
+> ??? docker: error while loading shared libraries: libltdl.so.7: cannot open shared object file: No such file or directory ???
 
 - 1、 exec进入jenkins容器， 执行 apt-get update && apt-get install -y libltdl7
 
