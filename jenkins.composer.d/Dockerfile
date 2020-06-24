@@ -8,11 +8,7 @@ ENV PHP_VERSION 7.0.33
 ENV PHP_SHA256="ab8c5be6e32b1f8d032909dedaaaa4bbb1a209e519abb01a52ce3914f9a13d96"
 ENV PHP_INI_DIR /usr/local/etc/php
 
-COPY docker-php-source          /usr/bin/
-COPY docker-php-ext-install     /usr/bin/
-COPY docker-php-ext-enable      /usr/bin/
-COPY docker-php-ext-configure   /usr/bin/
-COPY docker-php-entrypoint      /usr/bin/
+COPY docker-php-*           /usr/bin/
 
 RUN set -eux; \
 	addgroup -g 263 -S www-data; \
@@ -187,6 +183,8 @@ RUN set -eux; \
 ENTRYPOINT ["docker-php-entrypoint"]
 
 WORKDIR /var/www/html
+
+USER www-data
 
 STOPSIGNAL SIGQUIT
 

@@ -21,5 +21,5 @@ docker run -dit -p 8080:8080 -p 50000:50000
     -v ./jenkins.composer:/usr/bin/composer
     -v ./jenkins.npm:/usr/bin/npm 
     --name jenkins
-    jenkinszh/jenkins-zh:lts
+    registry.cn-shenzhen.aliyuncs.com/nekoimi/jenkinszh:with-docker
 ```

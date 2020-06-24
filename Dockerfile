@@ -5,6 +5,9 @@ LABEL maintainer="yangjinbo <yangjinbo@yoyohr.com>"
 USER root
 
 RUN true \
+    && userdel www-data \
+    && groupadd -g 263 www-data \
+    && useradd -s /sbin/nologin www-data -d /var/www -g www-data -u 263 \
     && echo '' > /etc/apt/source.list \
     && echo 'deb http://mirrors.aliyun.com/debian/ stretch main non-free contrib' >> /etc/apt/source.list \
     && echo 'deb http://mirrors.aliyun.com/debian/ stretch main non-free contrib' >> /etc/apt/source.list \
@@ -17,5 +20,3 @@ RUN true \
     && echo 'deb-src http://mirrors.aliyun.com/debian/ stretch-backports main non-free contrib' >> /etc/apt/source.list \
     && apt-get update \
     && apt-get install -y libltdl7
-
-USER jenkins
