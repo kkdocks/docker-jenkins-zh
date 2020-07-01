@@ -18,6 +18,8 @@ services:
       - ./jenkins.composer:/usr/bin/composer
       - ./jenkins.npm:/usr/bin/npm
       - ./jenkins.bi-npm:/usr/bin/bi-npm
+      - ./jenkins.yarn:/usr/bin/yarn
+      - ./jenkins.bi-yarn:/usr/bin/bi-yarn
       - ./jenkins.bi-builder:/usr/bin/bi-builder
     privileged: true
 
