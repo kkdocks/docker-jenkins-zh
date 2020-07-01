@@ -17,6 +17,7 @@ services:
       - /var/run/docker.sock:/var/run/docker.sock
       - ./jenkins.composer:/usr/bin/composer
       - ./jenkins.npm:/usr/bin/npm
+      - ./jenkins.bi.npm:/usr/bin/bi.npm
       - ./jenkins.bi-builder:/usr/bin/bi-builder
     privileged: true
 
