@@ -1,5 +1,4 @@
 #!/usr/bin/env bash
 
 echo ">>> $PWD"
-pname=$(basename `pwd`)
-docker run --rm -v /home/nfs/jenkins/jenkins_home/workspace/${pname}:/var/www/html registry.cn-shenzhen.aliyuncs.com/nekoimi/php:composer composer "$@"
+docker run --rm -v /home/nfs/jenkins/jenkins_home/workspace/$(basename `pwd`):/var/www/html registry.cn-shenzhen.aliyuncs.com/nekoimi/php:composer composer "$@"
