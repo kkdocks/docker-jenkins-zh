@@ -1,4 +1,4 @@
 #!/usr/bin/env bash
 
 echo ">>> $PWD"
-docker run --rm -v /home/nfs/jenkins/jenkins_home/workspace/$(basename `pwd`):/work registry.cn-shenzhen.aliyuncs.com/nekoimi/node:npm npm "$@"
+docker run --rm -v /root/.npm:/root/.npm -v /home/nfs/jenkins/jenkins_home/workspace/$(basename `pwd`):/work registry.cn-shenzhen.aliyuncs.com/nekoimi/node:npm npm "$@"

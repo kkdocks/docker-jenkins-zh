@@ -12,6 +12,7 @@ services:
     networks:
       - jenkins-network
     volumes:
+      - /root/.npm:/root/.npm
       - /root/.m2:/root/.m2
       - /root/.cache/composer:/root/.cache/composer
       - /home/nfs/jenkins/jenkins_home:/var/jenkins_home
