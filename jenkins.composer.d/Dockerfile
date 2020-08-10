@@ -41,8 +41,10 @@ RUN set -eux; \
         dpkg-dev \
         dpkg \
         file \
+        wget \
         g++ \
         gcc \
+        m4 \
         libc-dev \
         make \
         pkgconf \
@@ -70,6 +72,15 @@ RUN set -eux; \
 		CPPFLAGS="-fstack-protector-strong -fpic -fpie -O2 -D_LARGEFILE_SOURCE -D_FILE_OFFSET_BITS=64" \
 		LDFLAGS="-Wl,-O1 -Wl,--hash-style=both -pie" \
 	; \
+        \
+    mkdir -p /usr/src/icu ; \
+    cd /usr/src/icu ; \
+    wget https://github.com/unicode-org/icu/releases/download/release-64-2/icu4c-64_2-src.tgz ; \
+    tar -zxvf icu4c-64_2-src.tgz ; \
+    cd icu/source ; /
+    mkdir -p /usr/local/icu ; \
+    ./configure --prefix=/usr/local/icu ; \
+    make && make install ; \
             \
     tar -Jxf /usr/src/php.tar.xz -C /usr/src/php --strip-components=1 ; \
 	cd /usr/src/php; \
@@ -82,6 +93,7 @@ RUN set -eux; \
 		--with-mhash \
 		--enable-ftp \
 		--enable-mbstring \
+		--enable-mbregex \
 		--with-pdo-sqlite=/usr \
 		--with-sqlite3=/usr \
 		--with-curl \
@@ -89,6 +101,7 @@ RUN set -eux; \
 		--with-openssl \
 		--with-zlib \
 		--enable-zip \
+		--enable-bcmath \
 		--enable-opcache \
 		--with-xsl \
 		--with-bz2 \
@@ -104,6 +117,8 @@ RUN set -eux; \
         --enable-mysqlnd \
         --with-mysqli=mysqlnd \
         --with-pdo-mysql=mysqlnd \
+        --enable-intl  \
+        --with-icu-dir=/usr/local/icu \
         $(test "$gnuArch" = 's390x-linux-musl' && echo '--without-pcre-jit') \
         $(test '$(echo "$PHP_VERSION" | tr " " "\n" | sort -rV | head -n 1)' == '7.2.0' && echo '--with-password-argon2 --with-sodium=shared') ; \
     echo ">>>>>>>>>>>>>>>>>>>>>>>>>> make && make install " ; \
@@ -120,6 +135,7 @@ RUN set -eux; \
     docker-php-ext-configure gd --with-freetype-dir=/usr/include/ --with-jpeg-dir=/usr/include/ ; \
     docker-php-ext-install -j 2 gd ; \
     docker-php-ext-install -j 2 gmp ; \
+        \
 	cp -v php.ini-* "$PHP_INI_DIR/"; \
 	if [ -e "$PHP_INI_DIR/php.ini-production" ]; then \
 	    mv "$PHP_INI_DIR/php.ini-production" "$PHP_INI_DIR/php.ini"; \
@@ -154,8 +170,9 @@ RUN set -eux; \
 			echo 'include=etc/php-fpm.d/*.conf'; \
 		} | tee php-fpm.conf; \
 	fi; \
-        sed -i 's/pm.max_children = 5/pm.max_children = 1000/g' php-fpm.d/www.conf ; \
+        sed -i 's/pm.max_children = 5/pm.max_children = 500/g' php-fpm.d/www.conf ; \
         sed -i 's/;pm.max_requests = 500/pm.max_requests = 10000/g' php-fpm.d/www.conf ; \
+        sed -i 's/pm = dynamic/pm = static/g' php-fpm.d/www.conf ; \
 	{ \
 		echo '[global]'; \
 		echo 'error_log = /proc/self/fd/2'; \
