@@ -13,6 +13,7 @@ services:
       - jenkins-network
     volumes:
       - /home/nfs/jenkins/jenkins_home:/var/jenkins_home
+      - /home/mnt/codebase:/mnt/codebase
       - /usr/bin/docker:/usr/bin/docker
       - /var/run/docker.sock:/var/run/docker.sock
       - ./jenkins.composer:/usr/bin/composer
@@ -21,7 +22,6 @@ services:
       - ./jenkins.yarn:/usr/bin/yarn
       - ./jenkins.bi-yarn:/usr/bin/bi-yarn
       - ./jenkins.bi-builder:/usr/bin/bi-builder
-      - /mnt:/mnt
     privileged: true
 
 networks:
