@@ -21,6 +21,7 @@ services:
       - ./jenkins.yarn:/usr/bin/yarn
       - ./jenkins.bi-yarn:/usr/bin/bi-yarn
       - ./jenkins.bi-builder:/usr/bin/bi-builder
+      - /mnt:/mnt
     privileged: true
 
 networks:
