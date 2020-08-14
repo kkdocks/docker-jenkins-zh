@@ -2,12 +2,10 @@ FROM jenkinszh/jenkins-zh:2.238
 
 LABEL maintainer="yangjinbo <yangjinbo@yoyohr.com>"
 
+ENV TZ Asia/Shanghai
 USER root
-
 RUN true \
-    && userdel www-data \
-    && groupadd -g 263 www-data \
-    && useradd -s /sbin/nologin www-data -d /var/www -g www-data -u 263 \
+    && ln -sf /usr/share/zoneinfo/Asia/Shanghai /etc/localtime \
     && rm -rf /etc/apt/sources.list \
     && echo 'deb http://mirrors.aliyun.com/debian/ stretch main non-free contrib' > /etc/apt/sources.list \
     && echo 'deb http://mirrors.aliyun.com/debian/ stretch main non-free contrib' >> /etc/apt/sources.list \
