@@ -10,14 +10,6 @@ OR
 
 - 2、使用自定义镜像
 
-# Export Env
-
-vim: /etc/profile
-
-```bash
-export JENKINS_HOME=/home/nfs/jenkins/data/jenkins_home
-```
-
 # Run
 
 ```bash
