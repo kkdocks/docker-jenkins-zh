@@ -1,3 +1,3 @@
 #!/usr/bin/env bash
 
-docker run --rm -v /home/nfs/jenkins/jenkins_home/workspace/$(basename `pwd`):/var/www/html -v /root/.cache/composer:/root/.cache/composer registry.youpin-k8s.net/base-repos/composer:v2 "$@"
+docker run --rm -v $JENKINS_HOME/workspace/$(basename `pwd`):/var/www/html -v /root/.cache/composer:/root/.cache/composer registry.youpin-k8s.net/base-repos/composer:v2 "$@"
