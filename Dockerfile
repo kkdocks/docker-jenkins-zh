@@ -1,4 +1,4 @@
-FROM jenkinszh/jenkins-zh:2.250
+FROM jenkinszh/jenkins-zh:2.256
 
 LABEL maintainer="yangjinbo <yangjinbo@yoyohr.com>"
 
