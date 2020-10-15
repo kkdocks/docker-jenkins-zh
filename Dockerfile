@@ -2,12 +2,12 @@ FROM jenkinszh/jenkins-zh:2.250
 
 LABEL maintainer="yangjinbo <yangjinbo@yoyohr.com>"
 
-COPY jenkins.bi-builder     /usr/bin/bi-builder
-COPY jenkins.bi-npm         /usr/bin/bi-npm
-COPY jenkins.bi-yarn        /usr/bin/bi-yarn
-COPY jenkins.composer       /usr/bin/composer
-COPY jenkins.npm            /usr/bin/npm
-COPY jenkins.yarn           /usr/bin/yarn
+COPY script.d/jenkins.bi-builder     /usr/bin/bi-builder
+COPY script.d/jenkins.bi-npm         /usr/bin/bi-npm
+COPY script.d/jenkins.bi-yarn        /usr/bin/bi-yarn
+COPY script.d/jenkins.composer       /usr/bin/composer
+COPY script.d/jenkins.npm            /usr/bin/npm
+COPY script.d/jenkins.yarn           /usr/bin/yarn
 
 ENV TZ Asia/Shanghai
 USER root
