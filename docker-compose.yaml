@@ -1,6 +1,5 @@
 version: "3.6"
 services:
-
   jenkins:
     image: registry.cn-shenzhen.aliyuncs.com/nekoimi/jenkinszh:with-docker
     user: root
@@ -16,14 +15,7 @@ services:
       - /home/mnt/codebase:/var/codebase
       - /usr/bin/docker:/usr/bin/docker
       - /var/run/docker.sock:/var/run/docker.sock
-      - ./jenkins.composer:/usr/bin/composer
-      - ./jenkins.npm:/usr/bin/npm
-      - ./jenkins.bi-npm:/usr/bin/bi-npm
-      - ./jenkins.yarn:/usr/bin/yarn
-      - ./jenkins.bi-yarn:/usr/bin/bi-yarn
-      - ./jenkins.bi-builder:/usr/bin/bi-builder
     privileged: true
-
 networks:
   jenkins-network:
     driver: bridge

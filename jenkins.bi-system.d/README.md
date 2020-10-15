@@ -1,1 +1,0 @@
-registry.cn-shenzhen.aliyuncs.com/nekoimi-deploy/python:bi-builder

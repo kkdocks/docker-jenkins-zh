@@ -1,0 +1,7 @@
+*
+!jenkins.bi-builder
+!jenkins.bi-npm
+!jenkins.bi-yarn
+!jenkins.composer
+!jenkins.npm
+!jenkins.yarn
