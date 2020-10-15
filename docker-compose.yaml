@@ -1,7 +1,7 @@
 version: "3.6"
 services:
   jenkins:
-    image: registry.cn-shenzhen.aliyuncs.com/nekoimi/jenkinszh:with-docker
+    image: registry.youpin-k8s.net/base-repos/jenkins:v1
     user: root
     container_name: jenkins
     restart: always
