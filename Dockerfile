@@ -8,6 +8,8 @@ COPY script.d/jenkins.bi-yarn        /usr/bin/bi-yarn
 COPY script.d/jenkins.composer       /usr/bin/composer
 COPY script.d/jenkins.npm            /usr/bin/npm
 COPY script.d/jenkins.yarn           /usr/bin/yarn
+COPY script.d/jenkins.npm12            /usr/bin/npm12
+COPY script.d/jenkins.yarn12           /usr/bin/yarn12
 
 ENV TZ Asia/Shanghai
 USER root
@@ -34,4 +36,6 @@ RUN true \
     && chmod +x /usr/bin/bi-yarn \
     && chmod +x /usr/bin/composer \
     && chmod +x /usr/bin/npm \
-    && chmod +x /usr/bin/yarn
+    && chmod +x /usr/bin/yarn \
+    && chmod +x /usr/bin/npm12 \
+    && chmod +x /usr/bin/yarn12
