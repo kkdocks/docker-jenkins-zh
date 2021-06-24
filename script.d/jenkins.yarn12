@@ -1,3 +1,0 @@
-#!/usr/bin/env bash
-
-docker run --rm -v /root/.cache/yarn/v6:/usr/local/share/.cache/yarn/v6 -v /home/nfs/jenkins/data/jenkins_home/workspace/$(basename `pwd`):/work registry.youpin-k8s.net/base-repos/npm12:v1 yarn "$@"

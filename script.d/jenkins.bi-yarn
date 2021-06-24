@@ -1,3 +1,0 @@
-#!/usr/bin/env bash
-
-docker run --rm -v /home/nfs/jenkins/data/jenkins_home/workspace/$(basename `pwd`)/superset/assets:/work registry.youpin-k8s.net/base-repos/npm:v4 yarn "$@"
